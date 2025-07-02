@@ -1,6 +1,7 @@
 # cartverse
 
-A new Flutter project.
+A modern and responsive clothes shopping mobile application built using Flutter. This app provides a user-friendly interface for browsing, selecting, and purchasing clothes online. It showcases clean UI design, smooth navigation, and modular Flutter code architecture.
+
 
 ## Getting Started
 
