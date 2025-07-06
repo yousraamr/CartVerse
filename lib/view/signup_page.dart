@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
+import '../utils/snackbar.dart';
 import 'drawer_widget.dart';
+
+import 'package:cartverse/services/auth_service.dart';
+import 'package:cartverse/models/signup_model.dart';
+import 'package:cartverse/utils/route_names.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
+
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -20,12 +30,62 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
 
-  void _submitForm() {
+  /*void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // Handle submission
+      http.Response apiResponse = await AuthService().register(
+        _firstNameController.text,
+        _lastNameController.text,
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      final signupData = SignupModel.fromJson(json.decode(apiResponse.body));
+      print("Access Token: ${signupData.accessToken}");
+      print("User First Name: ${signupData.user?.firstName}");
       print("Registered: ${_firstNameController.text}");
     }
+  }*/
+
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      http.Response apiResponse = await AuthService().register(
+        _firstNameController.text,
+        _lastNameController.text,
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      print("Status Code: ${apiResponse.statusCode}");
+      print("Response Body: ${apiResponse.body}");
+
+      if (apiResponse.statusCode == 200 || apiResponse.statusCode ==201) {
+        try {
+          final decoded = json.decode(apiResponse.body);
+
+          if (decoded is Map<String, dynamic>) {
+            final signupData = SignupModel.fromJson(decoded);
+            print("Access Token: ${signupData.accessToken}");
+            print("User First Name: ${signupData.user?.firstName}");
+
+            Navigator.of(context).pushNamed(loginScreen);
+            showSuccessSnackBar(context,'Register Successfully');
+
+            await Future.delayed(const Duration(seconds: 2));
+            Navigator.pushReplacementNamed(context, loginScreen);
+          } else {
+            print("Unexpected JSON structure.");
+          }
+        } catch (e) {
+          print("Error decoding JSON: $e");
+        }
+      }
+      else{
+        showErrorSnackBar(context, apiResponse.body);
+      }
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

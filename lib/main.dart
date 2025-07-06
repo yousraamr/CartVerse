@@ -1,3 +1,5 @@
+import 'package:cartverse/utils/custom_router.dart';
+import 'package:cartverse/utils/route_names.dart';
 import 'package:flutter/material.dart';
 
 import 'view/home_page.dart';
@@ -14,6 +16,8 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
+      onGenerateRoute:CustomRouter.allRoutes,
+      initialRoute: homeScreen,
     );
   }
 }

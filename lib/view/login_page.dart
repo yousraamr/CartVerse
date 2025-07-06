@@ -1,5 +1,12 @@
+import 'dart:convert';
+
+import 'package:cartverse/models/login_model.dart';
+import 'package:cartverse/services/auth_service.dart';
+import 'package:cartverse/utils/route_names.dart';
+import 'package:cartverse/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'drawer_widget.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,17 +23,22 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _obscurePassword = true;
 
-  void _submitLogin() {
+  void _submitLogin() async{
     if (_formKey.currentState!.validate()) {
       String email = _emailController.text;
       String password = _passwordController.text;
       // Handle login logic
-      print("Logging in: $email");
+      http.Response apiResponse = await AuthService().login(email, password);
+      LoginModel loginModel = LoginModel.fromJson(json.decode(apiResponse.body));
+      print("Logging in: ${loginModel.accessToken}");
+      print("Logging in: ${loginModel.user!.firstName}");
+      Navigator.of(context).pushNamedAndRemoveUntil(homeScreen,(route)=>false);
+      showSuccessSnackBar(context,'Login Successfully');
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context ) {
     return Scaffold(
       appBar: AppBar(),
       drawer: const DrawerWidget(),
