@@ -119,19 +119,30 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       TextFormField(
                         controller: _firstNameController,
-                        decoration: const InputDecoration(labelText: 'First Name'),
+                        decoration: const InputDecoration(
+                            labelText: 'First Name',
+                            border:OutlineInputBorder(),
+                        ),
                         validator: (value) =>
                         value == null || value.isEmpty ? 'Enter your first name' : null,
                       ),
+                      const SizedBox(height: 16.0),
                       TextFormField(
                         controller: _lastNameController,
-                        decoration: const InputDecoration(labelText: 'Last Name'),
+                        decoration: const InputDecoration(
+                            labelText: 'Last Name',
+                            border:OutlineInputBorder(),
+                        ),
                         validator: (value) =>
                         value == null || value.isEmpty ? 'Enter your last name' : null,
                       ),
+                      const SizedBox(height: 16.0),
                       TextFormField(
                         controller: _emailController,
-                        decoration: const InputDecoration(labelText: 'Email'),
+                        decoration: const InputDecoration(
+                            labelText: 'Email',
+                            border:OutlineInputBorder(),
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) return 'Enter your email';
@@ -139,11 +150,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           return null;
                         },
                       ),
+                      const SizedBox(height: 16.0),
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
+                          border:OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword ? Icons.visibility : Icons.visibility_off,
@@ -158,11 +171,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             ? 'Enter minimum 6 characters'
                             : null,
                       ),
+                      const SizedBox(height: 16.0),
                       TextFormField(
                         controller: _confirmController,
                         obscureText: _obscureConfirm,
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
+                          border:OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureConfirm ? Icons.visibility : Icons.visibility_off,

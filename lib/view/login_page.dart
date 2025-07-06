@@ -68,7 +68,11 @@ class _LoginPageState extends State<LoginPage> {
                       // Email
                       TextFormField(
                         controller: _emailController,
-                        decoration: const InputDecoration(labelText: 'Email'),
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                          border:OutlineInputBorder(),
+
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) return 'Enter your email';
@@ -76,12 +80,14 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                       ),
+                      const SizedBox(height: 16.0),
                       // Password
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
+                          border:OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword ? Icons.visibility : Icons.visibility_off,
