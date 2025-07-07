@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:cartverse/models/login_model.dart';
-import 'package:cartverse/services/auth_service.dart';
-import 'package:cartverse/utils/route_names.dart';
-import 'package:cartverse/utils/snackbar.dart';
-import 'package:flutter/material.dart';
-import 'drawer_widget.dart';
-import 'package:http/http.dart' as http;
+import '../models/login_model.dart';
+import '../services/auth_service.dart';
+import '../services/user_session.dart';
+import '../utils/route_names.dart';
+import '../utils/snackbar.dart';
+import '../view/drawer_widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -27,13 +28,47 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       String email = _emailController.text;
       String password = _passwordController.text;
-      // Handle login logic
-      http.Response apiResponse = await AuthService().login(email, password);
-      LoginModel loginModel = LoginModel.fromJson(json.decode(apiResponse.body));
-      print("Logging in: ${loginModel.accessToken}");
-      print("Logging in: ${loginModel.user!.firstName}");
-      Navigator.of(context).pushNamedAndRemoveUntil(homeScreen,(route)=>false);
-      showSuccessSnackBar(context,'Login Successfully');
+      try {
+        // send request
+        http.Response apiResponse = await AuthService().login(email, password);
+        print("Login API status code: ${apiResponse.statusCode}");
+
+        if (apiResponse.statusCode == 200) {
+          final data = jsonDecode(apiResponse.body);
+          print("Decoded login response: $data");
+
+          // Null-safe parsing
+          final userData = data['user'] ?? {};
+          final String firstName = userData['firstName'] ?? '';
+          final String lastName = userData['lastName'] ?? '';
+          final String token = data['accessToken'] ?? '';
+
+          // save user session
+          await UserSession.saveUser(
+            firstName: firstName,
+            lastName: lastName,
+            token: token,
+          );
+
+          LoginModel loginModel = LoginModel.fromJson(json.decode(apiResponse.body));
+
+          // navigate and show success message
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              homeScreen, (route) => false);
+          showSuccessSnackBar(context, 'Login Successfully');
+
+          print("Access Token: ${loginModel.accessToken}");
+          print("User logged in: ${loginModel.user?.firstName} ${loginModel.user
+              ?.lastName}");
+        } else {
+          // show error if login failed
+          showErrorSnackBar(context, 'Login failed. Please check your credentials.');
+          print("Login failed: ${apiResponse.body}");
+        }
+      }catch(e) {
+        showErrorSnackBar(context, 'An error occurred during login.');
+        print("Login exception: $e");
+      }
     }
   }
 
