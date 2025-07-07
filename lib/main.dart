@@ -3,8 +3,12 @@ import 'package:cartverse/utils/route_names.dart';
 import 'package:flutter/material.dart';
 
 import 'view/home_page.dart';
+import 'utils/cache_helper.dart';
 
-void main() {
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await CacheHelper.init();
   runApp(const MyApp());
 }
 
