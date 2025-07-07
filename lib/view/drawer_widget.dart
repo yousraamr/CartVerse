@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../services/user_session.dart';
 import 'home_page.dart';
 import 'login_page.dart';
 import 'signup_page.dart';
@@ -29,8 +29,26 @@ class DrawerWidget extends StatelessWidget {
               },
             ),
           ),
+          const Divider(),
+          // Logout Button
+          ListTile(
+            title: const Text('Logout',
+                style: TextStyle(color: Colors.red)),
+            onTap: () async {
+              Navigator.pop(context);
+              await UserSession.clearUser();
+
+              // Navigate to HomePage and remove all previous routes
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+                    (route) => false,
+              );
+            },
+          ),
+
           const SizedBox(height: 16),
-          // ✅ Clickable CartVerse Text
+          // Clickable CartVerse Text
           InkWell(
             onTap: () {
               Navigator.pop(context); // Close drawer
