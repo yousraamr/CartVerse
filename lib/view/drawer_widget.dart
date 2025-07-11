@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+
+import '../view/categories_page.dart';
 import '../services/user_session.dart';
 import 'home_page.dart';
 import 'login_page.dart';
 import 'signup_page.dart';
+import 'about_page.dart';
+import 'contact_page.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
 
   static final Map<String, Widget> routes = {
+    'Categories': const CategoriesPage(),
+    'About': const AboutPage(),
+    'Contact': const ContactPage(),
     'Login': const LoginPage(),
     'Register': const RegisterPage(),
   };

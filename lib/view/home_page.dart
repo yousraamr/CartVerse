@@ -56,7 +56,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome, $firstName $lastName'),
-      ),      drawer: const DrawerWidget(),
+      ),
+      drawer: const DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(
           children: [
