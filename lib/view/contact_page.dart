@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'drawer_widget.dart';
 import 'footer.dart';
+import 'location_map.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({Key? key}) : super(key: key);
@@ -163,7 +166,8 @@ class ContactPage extends StatelessWidget {
             ),
 
             const SizedBox(height: 40),
-            // send us a message section
+
+            // Send us a message section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
@@ -223,7 +227,7 @@ class ContactPage extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: ElevatedButton(
-                      onPressed: (){},
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFB8860B),
                         foregroundColor: Colors.white,
@@ -235,6 +239,27 @@ class ContactPage extends StatelessWidget {
                       child: const Text('Send Message'),
                     ),
                   ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
+            // Location section
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Our Location',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  LocationMap(),
                 ],
               ),
             ),
