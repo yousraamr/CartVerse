@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
@@ -46,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            showSuccessSnackBar(context, 'Registered Successfully');
+            showSuccessSnackBar(context, 'register_success'.tr());
             Navigator.pushReplacementNamed(context, loginScreen);
           } else if (state is AuthFailure) {
             showErrorSnackBar(context, state.error);
@@ -58,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  const Text('User Registration', style: TextStyle(fontSize: 24)),
+                  Text('register_title'.tr(), style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 16),
                   Container(
                     padding: const EdgeInsets.all(20),
@@ -74,32 +75,34 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           TextFormField(
                             controller: _firstNameController,
-                            decoration: const InputDecoration(
-                              labelText: 'First Name',
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: 'register_first_name_label'.tr(),
+                              border: const OutlineInputBorder(),
                             ),
-                            validator: (value) => value == null || value.isEmpty ? 'Enter your first name' : null,
+                            validator: (value) =>
+                            value == null || value.isEmpty ? 'register_first_name_error'.tr() : null,
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: _lastNameController,
-                            decoration: const InputDecoration(
-                              labelText: 'Last Name',
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: 'register_last_name_label'.tr(),
+                              border: const OutlineInputBorder(),
                             ),
-                            validator: (value) => value == null || value.isEmpty ? 'Enter your last name' : null,
+                            validator: (value) =>
+                            value == null || value.isEmpty ? 'register_last_name_error'.tr() : null,
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: _emailController,
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: 'register_email_label'.tr(),
+                              border: const OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
-                              if (value == null || value.isEmpty) return 'Enter your email';
-                              if (!value.contains('@')) return 'Enter a valid email';
+                              if (value == null || value.isEmpty) return 'register_email_error'.tr();
+                              if (!value.contains('@')) return 'register_email_invalid'.tr();
                               return null;
                             },
                           ),
@@ -108,8 +111,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             controller: _passwordController,
                             obscureText: _obscurePassword,
                             decoration: InputDecoration(
-                              labelText: 'Password',
-                              border: OutlineInputBorder(),
+                              labelText: 'register_password_label'.tr(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
                                 onPressed: () => setState(() {
@@ -118,15 +121,15 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             validator: (value) =>
-                            value == null || value.length < 6 ? 'Enter minimum 6 characters' : null,
+                            value == null || value.length < 6 ? 'register_password_error'.tr() : null,
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: _confirmController,
                             obscureText: _obscureConfirm,
                             decoration: InputDecoration(
-                              labelText: 'Confirm Password',
-                              border: OutlineInputBorder(),
+                              labelText: 'register_confirm_label'.tr(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 icon: Icon(_obscureConfirm ? Icons.visibility : Icons.visibility_off),
                                 onPressed: () => setState(() {
@@ -135,7 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             validator: (value) =>
-                            value != _passwordController.text ? 'Passwords do not match' : null,
+                            value != _passwordController.text ? 'register_confirm_error'.tr() : null,
                           ),
                           const SizedBox(height: 20),
                           Align(
@@ -152,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               child: state is AuthLoading
                                   ? const CircularProgressIndicator(color: Colors.white)
-                                  : const Text('Register'),
+                                  : Text('register_button'.tr()),
                             ),
                           ),
                         ],
