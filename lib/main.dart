@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'cubit/auth_cubit.dart';
 import 'cubit/theme_cubit.dart';
@@ -12,15 +14,21 @@ import 'view/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await CacheHelper.init();
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => AuthCubit(AuthService())),
-        BlocProvider(create: (_) => ThemeCubit()),
-      ],
-      child: const MyApp(),
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'lib/lang',
+      fallbackLocale: const Locale('en'),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => AuthCubit(AuthService())),
+          BlocProvider(create: (_) => ThemeCubit()),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -40,6 +48,10 @@ class MyApp extends StatelessWidget {
           home: const HomePage(),
           onGenerateRoute: CustomRouter.allRoutes,
           initialRoute: homeScreen,
+          // localization
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
         );
       },
     );
