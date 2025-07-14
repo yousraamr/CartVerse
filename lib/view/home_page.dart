@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../view/drawer_widget.dart';
 import '../view/footer.dart';
 import '../services/user_session.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
       lastName = user['lastName'] ?? '';
     });
   }
+
   final List<Map<String, dynamic>> products = const [
     {
       'name': 'Flannel Shirt',
@@ -53,9 +54,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome $firstName $lastName'),
+        title: Text('${'welcome'.tr()} $firstName $lastName'),
       ),
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(
@@ -81,19 +83,19 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          'WINTER 2025',
-                          style: TextStyle(
+                        Text(
+                          'winter'.tr(),
+                          style: const TextStyle(
                             color: Colors.amber,
                             fontSize: 18,
                             letterSpacing: 1.5,
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
-                          'Enjoy Our\nLuxury Collection',
+                        Text(
+                          'luxury'.tr(),
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
@@ -108,9 +110,9 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.black,
                           ),
-                          child: const Text(
-                            'SHOP NOW',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          child: Text(
+                            'shop_now'.tr(),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -120,23 +122,21 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
 
-            // New Arrivals Section
             const SizedBox(height: 40),
-            const Text(
-              'New Arrivals',
-              style: TextStyle(
+            Text(
+              'new_arrivals'.tr(),
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Discover the latest trends',
-              style: TextStyle(color: Colors.grey),
+            Text(
+              'latest_trends'.tr(),
+              style: const TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 20),
 
-            // Product List
             SizedBox(
               height: 300,
               child: ListView.separated(
@@ -186,8 +186,6 @@ class _HomePageState extends State<HomePage> {
             ),
 
             const SizedBox(height: 40),
-
-            // Promo Section
             Stack(
               children: [
                 SizedBox(
@@ -206,18 +204,18 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'Get 20% Off Your First Order!',
-                        style: TextStyle(
+                      Text(
+                        'promo_title'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'Sign up and enjoy exclusive discounts.',
-                        style: TextStyle(
+                      Text(
+                        'promo_subtitle'.tr(),
+                        style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 16,
                         ),
@@ -230,13 +228,12 @@ class _HomePageState extends State<HomePage> {
                           foregroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                         ),
-                        child: const Text(
-                          'Shop Now',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        child: Text(
+                          'shop_now'.tr(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
-
                   ),
                 ),
               ],
