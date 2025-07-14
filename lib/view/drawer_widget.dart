@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../cubit/theme_cubit.dart';
 import '../services/user_session.dart';
 import 'categories_page.dart';
@@ -35,11 +36,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   Widget build(BuildContext context) {
     final routes = <String, Widget>{
-      'Categories': const CategoriesPage(),
-      'About': const AboutPage(),
-      'Contact': const ContactPage(),
-      if (!isLoggedIn) 'Login': const LoginPage(),
-      if (!isLoggedIn) 'Register': const RegisterPage(),
+      tr('categories'):  CategoriesPage(),
+      tr('about'): const AboutPage(),
+      tr('contact'): const ContactPage(),
+      if (!isLoggedIn) tr('login'): const LoginPage(),
+      if (!isLoggedIn) tr('register'): const RegisterPage(),
     };
 
     final themeCubit = context.read<ThemeCubit>();
@@ -63,7 +64,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           if (isLoggedIn) const Divider(),
           if (isLoggedIn)
             ListTile(
-              title: const Text('Logout', style: TextStyle(color: Colors.red)),
+              title: Text('logout'.tr(), style: const TextStyle(color: Colors.red)),
               onTap: () async {
                 Navigator.pop(context);
                 await UserSession.clearUser();
@@ -77,13 +78,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           const Divider(),
           ListTile(
-            title: const Text('Dark Mode'),
+            title: Text('dark_mode'.tr()),
             trailing: Switch(
               value: isDark,
               onChanged: (val) {
                 themeCubit.toggleTheme();
               },
             ),
+          ),
+          ListTile(
+            title: const Text("🇬🇧 English"),
+            onTap: () => context.setLocale(const Locale('en')),
+          ),
+          ListTile(
+            title: const Text("🇪🇬 العربية"),
+            onTap: () => context.setLocale(const Locale('ar')),
           ),
           const SizedBox(height: 16),
           InkWell(
@@ -94,12 +103,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 MaterialPageRoute(builder: (context) => const HomePage()),
               );
             },
-            child: const Center(
+            child: Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  'CartVerse',
-                  style: TextStyle(
+                  'app_title'.tr(),
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
                     color: Colors.black,
