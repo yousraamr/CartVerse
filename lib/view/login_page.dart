@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
@@ -36,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            showSuccessSnackBar(context, 'Login Successfully');
+            showSuccessSnackBar(context, 'login_success'.tr());
             Navigator.pushNamedAndRemoveUntil(context, homeScreen, (_) => false);
           } else if (state is AuthFailure) {
             showErrorSnackBar(context, state.error);
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  const Text('Welcome Back', style: TextStyle(fontSize: 24)),
+                  Text('login_title'.tr(), style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 16),
                   Container(
                     padding: const EdgeInsets.all(20),
@@ -64,13 +65,13 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           TextFormField(
                             controller: _emailController,
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: 'login_email_label'.tr(),
+                              border: const OutlineInputBorder(),
                             ),
                             validator: (value) {
-                              if (value == null || value.isEmpty) return 'Enter your email';
-                              if (!value.contains('@')) return 'Enter a valid email';
+                              if (value == null || value.isEmpty) return 'login_email_error'.tr();
+                              if (!value.contains('@')) return 'login_email_invalid'.tr();
                               return null;
                             },
                           ),
@@ -79,8 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _passwordController,
                             obscureText: _obscurePassword,
                             decoration: InputDecoration(
-                              labelText: 'Password',
-                              border: OutlineInputBorder(),
+                              labelText: 'login_password'.tr(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
                                 onPressed: () => setState(() {
@@ -88,7 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                                 }),
                               ),
                             ),
-                            validator: (value) => value == null || value.isEmpty ? 'Enter your password' : null,
+                            validator: (value) =>
+                            value == null || value.isEmpty ? 'login_password_error'.tr() : null,
                           ),
                           const SizedBox(height: 20),
                           Align(
@@ -105,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               child: state is AuthLoading
                                   ? const CircularProgressIndicator(color: Colors.white)
-                                  : const Text('Login'),
+                                  : Text('login_button'.tr()),
                             ),
                           ),
                         ],
