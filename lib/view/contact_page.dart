@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'drawer_widget.dart';
 import 'footer.dart';
@@ -37,21 +37,21 @@ class ContactPage extends StatelessWidget {
                   width: double.infinity,
                   color: Colors.black.withOpacity(0.5),
                   alignment: Alignment.center,
-                  child: const Column(
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Contact Us',
-                        style: TextStyle(
+                        'contact_hero_title'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 32,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
-                        'We\'d love to hear from you! Get in touch with us today.',
+                        'contact_hero_subtitle'.tr(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                           height: 1.3,
@@ -66,19 +66,19 @@ class ContactPage extends StatelessWidget {
             const SizedBox(height: 40),
 
             // Contact Information Section
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Contact Information',
-                    style: TextStyle(
+                    'contact_info_title'.tr(),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -95,16 +95,16 @@ class ContactPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Email',
-                                    style: TextStyle(
+                                    'contact_email_label'.tr(),
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFFB8860B),
                                     ),
                                   ),
-                                  SizedBox(height: 2),
-                                  Text(
-                                    'support@cartverse.com',
+                                  const SizedBox(height: 2),
+                                  const Text(
+                                    'contact_email_value',
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ],
@@ -118,16 +118,16 @@ class ContactPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'PHONE',
-                                    style: TextStyle(
+                                    'contact_phone_label'.tr(),
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFFB8860B),
                                     ),
                                   ),
-                                  SizedBox(height: 2),
-                                  Text(
-                                    '+20 123 456 7890',
+                                  const SizedBox(height: 2),
+                                   Text(
+                                    'contact_phone_value'.tr(),
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ],
@@ -141,16 +141,16 @@ class ContactPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Address',
-                                    style: TextStyle(
+                                    'contact_address_label'.tr(),
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFFB8860B),
                                     ),
                                   ),
-                                  SizedBox(height: 2),
-                                  Text(
-                                    '123 Fashion Street, Cairo, Egypt',
+                                  const SizedBox(height: 2),
+                                   Text(
+                                    'contact_address_value'.tr(),
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ],
@@ -173,9 +173,9 @@ class ContactPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Send Us a Message',
-                    style: TextStyle(
+                  Text(
+                    'contact_form_title'.tr(),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -185,8 +185,8 @@ class ContactPage extends StatelessWidget {
                   // Name Field
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Name',
-                      hintText: 'Enter your name',
+                      labelText: 'contact_form_name'.tr(),
+                      hintText: 'contact_form_name_hint'.tr(),
                       border: borderStyle,
                     ),
                   ),
@@ -195,8 +195,8 @@ class ContactPage extends StatelessWidget {
                   // Email Field
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
+                      labelText: 'contact_form_email'.tr(),
+                      hintText: 'contact_form_email_hint'.tr(),
                       border: borderStyle,
                     ),
                   ),
@@ -205,8 +205,8 @@ class ContactPage extends StatelessWidget {
                   // Subject Field
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Subject',
-                      hintText: 'Enter the subject',
+                      labelText: 'contact_form_subject'.tr(),
+                      hintText: 'contact_form_subject_hint'.tr(),
                       border: borderStyle,
                     ),
                   ),
@@ -216,8 +216,8 @@ class ContactPage extends StatelessWidget {
                   TextField(
                     maxLines: 5,
                     decoration: InputDecoration(
-                      labelText: 'Message',
-                      hintText: 'Enter your message',
+                      labelText: 'contact_form_message'.tr(),
+                      hintText: 'contact_form_message_hint'.tr(),
                       border: borderStyle,
                     ),
                   ),
@@ -236,7 +236,7 @@ class ContactPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
-                      child: const Text('Send Message'),
+                      child: Text('contact_form_button'.tr()),
                     ),
                   ),
                 ],
@@ -246,20 +246,20 @@ class ContactPage extends StatelessWidget {
             const SizedBox(height: 40),
 
             // Location section
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Our Location',
-                    style: TextStyle(
+                    'contact_location_title'.tr(),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  LocationMap(),
+                  const SizedBox(height: 20),
+                  const LocationMap(),
                 ],
               ),
             ),
