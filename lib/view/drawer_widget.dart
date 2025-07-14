@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../view/categories_page.dart';
 import '../services/user_session.dart';
 import 'home_page.dart';
@@ -8,19 +7,39 @@ import 'signup_page.dart';
 import 'about_page.dart';
 import 'contact_page.dart';
 
-class DrawerWidget extends StatelessWidget {
+class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
 
-  static final Map<String, Widget> routes = {
-    'Categories': const CategoriesPage(),
-    'About': const AboutPage(),
-    'Contact': const ContactPage(),
-    'Login': const LoginPage(),
-    'Register': const RegisterPage(),
-  };
+  @override
+  State<DrawerWidget> createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
+
+  Future<void> checkLoginStatus() async {
+    final user = await UserSession.getUser();
+    setState(() {
+      isLoggedIn = user['token'] != null && user['token']!.isNotEmpty;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final routes = <String, Widget>{
+      'Categories': const CategoriesPage(),
+      'About': const AboutPage(),
+      'Contact': const ContactPage(),
+      if (!isLoggedIn) 'Login': const LoginPage(),
+      if (!isLoggedIn) 'Register': const RegisterPage(),
+    };
+
     return Drawer(
       child: ListView(
         children: [
@@ -36,26 +55,25 @@ class DrawerWidget extends StatelessWidget {
               },
             ),
           ),
-          const Divider(),
-          // Logout Button
-          ListTile(
-            title: const Text('Logout',
-                style: TextStyle(color: Colors.red)),
-            onTap: () async {
-              Navigator.pop(context);
-              await UserSession.clearUser();
+          if (isLoggedIn) const Divider(),
+          if (isLoggedIn)
+            ListTile(
+              title: const Text('Logout', style: TextStyle(color: Colors.red)),
+              onTap: () async {
+                Navigator.pop(context);
+                await UserSession.clearUser();
+                setState(() {
+                  isLoggedIn = false;
+                });
 
-              // Navigate to HomePage and remove all previous routes
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-                    (route) => false,
-              );
-            },
-          ),
-
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                      (route) => false,
+                );
+              },
+            ),
           const SizedBox(height: 16),
-          // Clickable CartVerse Text
           InkWell(
             onTap: () {
               Navigator.pop(context); // Close drawer
