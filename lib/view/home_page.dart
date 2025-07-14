@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome, $firstName $lastName'),
+        title: Text('Welcome $firstName $lastName'),
       ),
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(
