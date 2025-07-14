@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '../view/categories_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/theme_cubit.dart';
 import '../services/user_session.dart';
+import 'categories_page.dart';
 import 'home_page.dart';
 import 'login_page.dart';
 import 'signup_page.dart';
@@ -40,6 +42,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       if (!isLoggedIn) 'Register': const RegisterPage(),
     };
 
+    final themeCubit = context.read<ThemeCubit>();
+    final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
+
     return Drawer(
       child: ListView(
         children: [
@@ -47,7 +52,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 (entry) => ListTile(
               title: Text(entry.key),
               onTap: () {
-                Navigator.pop(context); // Close drawer
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => entry.value),
@@ -62,10 +67,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               onTap: () async {
                 Navigator.pop(context);
                 await UserSession.clearUser();
-                setState(() {
-                  isLoggedIn = false;
-                });
-
+                setState(() => isLoggedIn = false);
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()),
@@ -73,10 +75,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 );
               },
             ),
+          const Divider(),
+          ListTile(
+            title: const Text('Dark Mode'),
+            trailing: Switch(
+              value: isDark,
+              onChanged: (val) {
+                themeCubit.toggleTheme();
+              },
+            ),
+          ),
           const SizedBox(height: 16),
           InkWell(
             onTap: () {
-              Navigator.pop(context); // Close drawer
+              Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage()),
