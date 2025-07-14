@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
@@ -9,7 +10,7 @@ class Footer extends StatelessWidget {
       color: const Color(0xFF1A1A1A),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
       width: double.infinity,
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Top Row (Logo + Sections)
@@ -24,18 +25,18 @@ class Footer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'CARTVERSE',
-                      style: TextStyle(
+                      'footer_logo'.tr(),
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         letterSpacing: 1.2,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
-                      'Our mission is to offer you the best selection of stylish and high-quality clothing, whether from well-known brands or emerging designers.',
-                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                      'footer_mission'.tr(),
+                      style: const TextStyle(color: Colors.white70, fontSize: 14),
                     ),
                   ],
                 ),
@@ -48,22 +49,22 @@ class Footer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'CONTACT INFO',
-                      style: TextStyle(
+                      'footer_contact_info'.tr(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    SizedBox(height: 8),
-                    Text('ADDRESS:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text('105 New Cairo, Cairo, Egypt', style: TextStyle(color: Colors.white70)),
-                    SizedBox(height: 8),
-                    Text('PHONE:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text('+(201) 060-472-366', style: TextStyle(color: Colors.white70)),
-                    SizedBox(height: 8),
-                    Text('EMAIL:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text('fixedmasr@cartverse.com', style: TextStyle(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    Text('footer_address_label'.tr(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    Text('footer_address_value'.tr(), style: const TextStyle(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    Text('footer_phone_label'.tr(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    Text('footer_phone_value'.tr(), style: const TextStyle(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    Text('footer_email_label'.tr(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    Text('footer_email_value'.tr(), style: const TextStyle(color: Colors.white70)),
                   ],
                 ),
               ),
@@ -75,18 +76,18 @@ class Footer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'CATEGORIES',
-                      style: TextStyle(
+                      'footer_categories'.tr(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    SizedBox(height: 8),
-                    Text('Men\'s Clothing', style: TextStyle(color: Colors.white70)),
-                    Text('Women\'s Clothing', style: TextStyle(color: Colors.white70)),
-                    Text('Kid\'s Clothing', style: TextStyle(color: Colors.white70)),
-                    Text('Sport\'s Clothing', style: TextStyle(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    Text('footer_category_men'.tr(), style: const TextStyle(color: Colors.white70)),
+                    Text('footer_category_women'.tr(), style: const TextStyle(color: Colors.white70)),
+                    Text('footer_category_kids'.tr(), style: const TextStyle(color: Colors.white70)),
+                    Text('footer_category_sport'.tr(), style: const TextStyle(color: Colors.white70)),
                   ],
                 ),
               ),
@@ -98,33 +99,33 @@ class Footer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'NAVIGATE',
-                      style: TextStyle(
+                      'footer_navigate'.tr(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    SizedBox(height: 8),
-                    Text('Home', style: TextStyle(color: Colors.white70)),
-                    Text('About', style: TextStyle(color: Colors.white70)),
-                    Text('Blog', style: TextStyle(color: Colors.white70)),
-                    Text('Categories', style: TextStyle(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    Text('footer_nav_home'.tr(), style: const TextStyle(color: Colors.white70)),
+                    Text('footer_nav_about'.tr(), style: const TextStyle(color: Colors.white70)),
+                    Text('footer_nav_blog'.tr(), style: const TextStyle(color: Colors.white70)),
+                    Text('footer_nav_categories'.tr(), style: const TextStyle(color: Colors.white70)),
                   ],
                 ),
               ),
             ],
           ),
 
-           SizedBox(height: 40),
+          const SizedBox(height: 40),
 
           // Bottom Divider + Copyright
-           Divider(color: Colors.white24),
-           SizedBox(height: 10),
-           Center(
+          const Divider(color: Colors.white24),
+          const SizedBox(height: 10),
+          Center(
             child: Text(
-              'Copyright © 2025 Cartverse By Yousra Amr.\nAll Rights Reserved',
-              style: TextStyle(color: Colors.white54, fontSize: 13),
+              'footer_copyright'.tr(),
+              style: const TextStyle(color: Colors.white54, fontSize: 13),
               textAlign: TextAlign.center,
             ),
           ),
