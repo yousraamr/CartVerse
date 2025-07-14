@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'drawer_widget.dart';
 import 'footer.dart';
 
 class CategoriesPage extends StatelessWidget {
-  const CategoriesPage({Key? key}) : super(key: key);
+   CategoriesPage({Key? key}) : super(key: key);
 
-  final List<Map<String, String>> categories = const [
+  final List<Map<String, String>> categories = [
     {
-      'title': 'Men',
+      'title': 'category_men'.tr(),
       'image': 'https://res.cloudinary.com/dnka30e3s/image/upload/v1737885895/Cartverse/srsrzcnhyektvc0l5jfr.jpg',
     },
     {
-      'title': 'Women',
+      'title': 'category_women'.tr(),
       'image': 'https://res.cloudinary.com/dnka30e3s/image/upload/v1737885895/Cartverse/tsfuikevxfjqmvqk3qsf.jpg',
     },
     {
-      'title': 'Kids',
+      'title': 'category_kids'.tr(),
       'image': 'https://cdn-eu.dynamicyield.com/api/9876644/images/37d243d334c63__hp-w12-22032022-h_m-kids1.jpg',
     },
     {
-      'title': 'Sport',
+      'title': 'category_sport'.tr(),
       'image': 'https://cdn-eu.dynamicyield.com/api/9876644/images/1dda9ae79a671__h_m-w40-06102022-7416b-1x1.jpg',
     },
   ];
@@ -37,8 +39,8 @@ class CategoriesPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Categories',
+                   Text(
+                    'categories_title'.tr(),
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
