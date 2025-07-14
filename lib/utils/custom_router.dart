@@ -22,7 +22,7 @@ class CustomRouter {
             settings: settings, builder: (_) => const LoginPage());
       case categoriesScreen:
         return MaterialPageRoute(
-            settings: settings, builder: (_) => const CategoriesPage());
+            settings: settings, builder: (_) => CategoriesPage());
       case aboutScreen:
         return MaterialPageRoute(
             settings: settings, builder: (_) => const AboutPage());
