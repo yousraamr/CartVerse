@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'drawer_widget.dart';
 import 'footer.dart';
 
@@ -29,21 +30,21 @@ class AboutPage extends StatelessWidget {
                   width: double.infinity,
                   color: Colors.black.withOpacity(0.5),
                   alignment: Alignment.center,
-                  child: const Column(
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Welcome to Cartverse',
-                        style: TextStyle(
+                        'about_hero_title'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 32,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
-                        'Your destination for premium fashion and exceptional service.',
+                        'about_hero_subtitle'.tr(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           height: 1.3,
@@ -57,24 +58,24 @@ class AboutPage extends StatelessWidget {
 
             const SizedBox(height: 40),
 
-            // our story section
+            // Our Story Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Our Story',
-                    style: TextStyle(
+                  Text(
+                    'our_story_title'.tr(),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'At Cartverse, we believe in delivering more than\njust products. We deliver experiences. Founded\nin 2023, our mission is to provide high-quality\nfashion that empowers our customers to\nexpress their unique style.',
+                  Text(
+                    'our_story_text'.tr(),
                     textAlign: TextAlign.left,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 16,
                       height: 1.5,
@@ -94,16 +95,17 @@ class AboutPage extends StatelessWidget {
               ),
             ),
 
-            // meet our owner section
             const SizedBox(height: 40),
+
+            // Meet Owner Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Meet our Owner',
-                    style: TextStyle(
+                  Text(
+                    'meet_owner_title'.tr(),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -131,9 +133,9 @@ class AboutPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          'Hisham Rabea',
-                          style: TextStyle(
+                        Text(
+                          'owner_name'.tr(),
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.brown,
@@ -141,9 +143,9 @@ class AboutPage extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Software Engineer\n@ Giza Systems',
-                          style: TextStyle(
+                        Text(
+                          'owner_job'.tr(),
+                          style: const TextStyle(
                             fontSize: 16,
                             color: Colors.black54,
                           ),
