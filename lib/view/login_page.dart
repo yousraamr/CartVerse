@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../models/login_model.dart';
-import '../services/auth_service.dart';
-import '../services/user_session.dart';
-import '../utils/route_names.dart';
+import '../cubit/auth_cubit.dart';
+import '../cubit/auth_state.dart';
 import '../utils/snackbar.dart';
-import '../view/drawer_widget.dart';
+import '../utils/route_names.dart';
+import 'drawer_widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,146 +16,107 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
-  void _submitLogin() async{
+  void _submitLogin() {
     if (_formKey.currentState!.validate()) {
-      String email = _emailController.text;
-      String password = _passwordController.text;
-      try {
-        // send request
-        http.Response apiResponse = await AuthService().login(email, password);
-        print("Login API status code: ${apiResponse.statusCode}");
-
-        if (apiResponse.statusCode == 200) {
-          final data = jsonDecode(apiResponse.body);
-          print("Decoded login response: $data");
-
-          // Null-safe parsing
-          final userData = data['user'] ?? {};
-          final String firstName = userData['firstName'] ?? '';
-          final String lastName = userData['lastName'] ?? '';
-          final String token = data['accessToken'] ?? '';
-
-          // save user session
-          await UserSession.saveUser(
-            firstName: firstName,
-            lastName: lastName,
-            token: token,
-          );
-
-          LoginModel loginModel = LoginModel.fromJson(json.decode(apiResponse.body));
-
-          // navigate and show success message
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              homeScreen, (route) => false);
-          showSuccessSnackBar(context, 'Login Successfully');
-
-          print("Access Token: ${loginModel.accessToken}");
-          print("User logged in: ${loginModel.user?.firstName} ${loginModel.user
-              ?.lastName}");
-        } else {
-          // show error if login failed
-          showErrorSnackBar(context, 'Login failed. Please check your credentials.');
-          print("Login failed: ${apiResponse.body}");
-        }
-      }catch(e) {
-        showErrorSnackBar(context, 'An error occurred during login.');
-        print("Login exception: $e");
-      }
+      final cubit = context.read<AuthCubit>();
+      cubit.login(_emailController.text, _passwordController.text);
     }
   }
 
   @override
-  Widget build(BuildContext context ) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       drawer: const DrawerWidget(),
       backgroundColor: const Color(0xFFF5F6F8),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const Text(
-                'Welcome Back',
-                style: TextStyle(fontSize: 24),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(20),
-                width: 400,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      // Email
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          border:OutlineInputBorder(),
-
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) return 'Enter your email';
-                          if (!value.contains('@')) return 'Enter a valid email';
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16.0),
-                      // Password
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscurePassword,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          border:OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword ? Icons.visibility : Icons.visibility_off,
+      body: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+            showSuccessSnackBar(context, 'Login Successfully');
+            Navigator.pushNamedAndRemoveUntil(context, homeScreen, (_) => false);
+          } else if (state is AuthFailure) {
+            showErrorSnackBar(context, state.error);
+          }
+        },
+        builder: (context, state) {
+          return Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  const Text('Welcome Back', style: TextStyle(fontSize: 24)),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    width: 400,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
+                              border: OutlineInputBorder(),
                             ),
-                            onPressed: () => setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            }),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) return 'Enter your email';
+                              if (!value.contains('@')) return 'Enter a valid email';
+                              return null;
+                            },
                           ),
-                        ),
-                        validator: (value) =>
-                        value == null || value.isEmpty ? 'Enter your password' : null,
-                      ),
-                      const SizedBox(height: 20),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: ElevatedButton(
-                          onPressed: _submitLogin,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFB8860B), // gold color
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: _obscurePassword,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              border: OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+                                onPressed: () => setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                }),
+                              ),
+                            ),
+                            validator: (value) => value == null || value.isEmpty ? 'Enter your password' : null,
+                          ),
+                          const SizedBox(height: 20),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: ElevatedButton(
+                              onPressed: state is AuthLoading ? null : _submitLogin,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFB8860B),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              child: state is AuthLoading
+                                  ? const CircularProgressIndicator(color: Colors.white)
+                                  : const Text('Login'),
                             ),
                           ),
-                          child: const Text('Login'),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
