@@ -7,7 +7,7 @@ void showSuccessSnackBar(BuildContext context, String msg) {
           style: const TextStyle(color: Colors.white),
           textAlign: TextAlign.center),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.orange,
+      backgroundColor: Colors.green,
     );
 
     ScaffoldMessenger.of(context)
