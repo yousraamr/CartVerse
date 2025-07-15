@@ -9,6 +9,7 @@ import 'login_page.dart';
 import 'signup_page.dart';
 import 'about_page.dart';
 import 'contact_page.dart';
+import 'wishlist_page.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -39,6 +40,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       tr('categories'):  CategoriesPage(),
       tr('about'): const AboutPage(),
       tr('contact'): const ContactPage(),
+      tr('wishlist'): const WishlistPage(),
       if (!isLoggedIn) tr('login'): const LoginPage(),
       if (!isLoggedIn) tr('register'): const RegisterPage(),
     };
