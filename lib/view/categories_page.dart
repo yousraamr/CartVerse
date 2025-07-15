@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'product_list_page.dart';
 import 'drawer_widget.dart';
 import 'footer.dart';
 
 class CategoriesPage extends StatelessWidget {
-   CategoriesPage({Key? key}) : super(key: key);
+  CategoriesPage({Key? key}) : super(key: key);
 
   final List<Map<String, String>> categories = [
     {
+      'key': 'Men',
       'title': 'category_men'.tr(),
       'image': 'https://res.cloudinary.com/dnka30e3s/image/upload/v1737885895/Cartverse/srsrzcnhyektvc0l5jfr.jpg',
     },
     {
+      'key': 'Women',
       'title': 'category_women'.tr(),
       'image': 'https://res.cloudinary.com/dnka30e3s/image/upload/v1737885895/Cartverse/tsfuikevxfjqmvqk3qsf.jpg',
     },
     {
+      'key': 'Kids',
       'title': 'category_kids'.tr(),
       'image': 'https://cdn-eu.dynamicyield.com/api/9876644/images/37d243d334c63__hp-w12-22032022-h_m-kids1.jpg',
     },
     {
+      'key': 'Sports',
       'title': 'category_sport'.tr(),
       'image': 'https://cdn-eu.dynamicyield.com/api/9876644/images/1dda9ae79a671__h_m-w40-06102022-7416b-1x1.jpg',
     },
@@ -39,9 +43,9 @@ class CategoriesPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(
+                  Text(
                     'categories_title'.tr(),
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
                   GridView.builder(
@@ -56,22 +60,35 @@ class CategoriesPage extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
                       final category = categories[index];
-                      return Column(
-                        children: [
-                          ClipOval(
-                            child: Image.network(
-                              category['image']!,
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.cover,
+
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductListPage(
+                                categoryName: category['key']!, // Use the key for filtering
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            category['title']!,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            ClipOval(
+                              child: Image.network(
+                                category['image']!,
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              category['title']!,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
