@@ -7,6 +7,7 @@ import '../view/signup_page.dart';
 import '../view/categories_page.dart';
 import '../view/about_page.dart';
 import '../view/contact_page.dart';
+import '../view/wishlist_page.dart';
 
 class CustomRouter {
   static Route<dynamic>? allRoutes(RouteSettings settings) {
@@ -29,6 +30,9 @@ class CustomRouter {
       case contactScreen:
         return MaterialPageRoute(
             settings: settings, builder: (_) => const ContactPage());
+      case wishlistScreen:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => const WishlistPage());
       default:
         return null;
     }
