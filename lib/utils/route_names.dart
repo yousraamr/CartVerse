@@ -4,3 +4,4 @@ const loginScreen = 'LoginScreen';
 const categoriesScreen = 'CategoriesPage';
 const aboutScreen = 'AboutPage';
 const contactScreen = 'ContactPage';
+const wishlistScreen = 'WishlistPage';
