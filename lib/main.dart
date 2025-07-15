@@ -5,6 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'cubit/auth_cubit.dart';
 import 'cubit/theme_cubit.dart';
+import 'cubit/wishlist_cubit.dart';
+import 'cubit/cart_cubit.dart';
 import 'services/auth_service.dart';
 import 'utils/themes.dart';
 import 'utils/custom_router.dart';
@@ -26,6 +28,8 @@ void main() async {
         providers: [
           BlocProvider(create: (_) => AuthCubit(AuthService())),
           BlocProvider(create: (_) => ThemeCubit()),
+          BlocProvider(create: (_) => WishlistCubit()..loadWishlist()),
+          BlocProvider(create: (_) => CartCubit()..loadCart()),
         ],
         child: const MyApp(),
       ),
