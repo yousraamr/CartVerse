@@ -94,5 +94,17 @@
   "register_confirm_label": "تأكيد كلمة المرور",
   "register_confirm_error": "كلمتا المرور غير متطابقتين",
   "register_button": "تسجيل",
-  "register_success": "تم التسجيل بنجاح"
+  "register_success": "تم التسجيل بنجاح",
+
+  "wishlist": "قائمتي المفضلة",
+  "wishlist_title": "قائمتي المفضلة",
+  "wishlist_empty": "قائمتك المفضلة فارغة.",
+
+  "cart": "عربة التسوق",
+  "cart_title": "عربة التسوق",
+  "cart_empty": "عربة التسوق فارغة.",
+  "cart_price_label": "السعر",
+  "cart_total": "الإجمالي",
+  "cart_clear": "إفراغ العربة",
+  "cart_cleared": "تم إفراغ العربة"
 }
