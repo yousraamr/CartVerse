@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/product_model.dart';
 import '../cubit/wishlist_cubit.dart';
+import '../cubit/cart_cubit.dart';
 import '../utils/snackbar.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final bool isWishlist;
 
-  const ProductCard(
-      {Key? key,
-        required this.product,
-        this.isWishlist = false,
-      }) : super(key: key);
+  const ProductCard({
+    Key? key,
+    required this.product,
+    this.isWishlist = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final wishlistCubit = context.read<WishlistCubit>();
+    final cartCubit = context.read<CartCubit>();
     final isInWishlist = wishlistCubit.isInWishlist(product);
 
     return Card(
@@ -56,6 +58,13 @@ class ProductCard extends StatelessWidget {
                           wishlistCubit.addToWishlist(product);
                           showSuccessSnackBar(context, '${product.name} added to wishlist');
                         }
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add_shopping_cart, color: Colors.blue),
+                      onPressed: () {
+                        cartCubit.addToCart(product);
+                        showSuccessSnackBar(context, '${product.name} added to cart');
                       },
                     ),
                   ],
