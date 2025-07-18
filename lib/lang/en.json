@@ -94,5 +94,17 @@
   "register_confirm_label": "Confirm Password",
   "register_confirm_error": "Passwords do not match",
   "register_button": "Register",
-  "register_success": "Registered Successfully"
+  "register_success": "Registered Successfully",
+
+  "wishlist": "Wishlist",
+  "wishlist_title": "Wishlist",
+  "wishlist_empty": "Your wishlist is empty.",
+
+  "cart": "Cart",
+  "cart_title": "Shopping Cart",
+  "cart_empty": "Your cart is empty.",
+  "cart_price_label": "Price",
+  "cart_total": "Total",
+  "cart_clear": "Clear Cart",
+  "cart_cleared": "Cart cleared"
 }
