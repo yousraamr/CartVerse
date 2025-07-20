@@ -64,6 +64,14 @@ class CartCubit extends Cubit<List<CartItem>> {
     CacheHelper.saveString(key: cartKey, value: jsonString);
   }
 
+  // Remove cart data when logout
+  void removeCartData({bool removeCache = false}) {
+    emit([]);
+    if (removeCache) {
+      CacheHelper.removeData(key: cartKey);
+    }
+  }
+
   /// Calculate total price
   double getTotal() {
     return state.fold(0.0, (sum, item) => sum + (item.product.price * item.quantity));
