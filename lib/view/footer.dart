@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import '../services/user_session.dart';
 
-class Footer extends StatelessWidget {
-  const Footer({super.key});
+class Footer extends StatefulWidget {
+  const Footer({Key? key}) : super(key: key);
+
+  @override
+  State<Footer> createState() => _FooterState();
+}
+
+class _FooterState extends State<Footer> {
+  bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
+
+  Future<void> checkLoginStatus() async {
+    final user = await UserSession.getUser();
+    setState(() {
+      isLoggedIn = user['token'] != null && user['token']!.isNotEmpty;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // This line ensures rebuild on locale change
+    final locale = context.locale;
+
     return Container(
       color: const Color(0xFF1A1A1A),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
