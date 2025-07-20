@@ -37,4 +37,28 @@ class CacheHelper {
   static Future<bool> clearAll() async {
     return await _prefs!.clear();
   }
+
+  static Future<void> saveUser({
+    required String firstName,
+    required String lastName,
+    required String token,
+  }) async {
+    await _prefs!.setString('firstName', firstName);
+    await _prefs!.setString('lastName', lastName);
+    await _prefs!.setString('token', token);
+  }
+
+  static Future<Map<String, String?>> getUser() async {
+    return {
+      'firstName': _prefs!.getString('firstName'),
+      'lastName': _prefs!.getString('lastName'),
+      'token': _prefs!.getString('token'),
+    };
+  }
+
+  static Future<void> clearUser() async {
+    await _prefs!.remove('firstName');
+    await _prefs!.remove('lastName');
+    await _prefs!.remove('token');
+  }
 }
