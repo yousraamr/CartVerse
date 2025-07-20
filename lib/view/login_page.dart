@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
+import '../cubit/wishlist_cubit.dart';
+import '../cubit/cart_cubit.dart';
 import '../utils/snackbar.dart';
 import '../utils/route_names.dart';
 import 'drawer_widget.dart';
@@ -38,6 +40,13 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) {
           if (state is AuthSuccess) {
             showSuccessSnackBar(context, 'login_success'.tr());
+
+            // reload wishlist after login
+            context.read<WishlistCubit>().loadWishlist();
+
+            // reload cart after login
+            context.read<CartCubit>().loadCart();
+
             Navigator.pushNamedAndRemoveUntil(context, homeScreen, (_) => false);
           } else if (state is AuthFailure) {
             showErrorSnackBar(context, state.error);
@@ -80,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _passwordController,
                             obscureText: _obscurePassword,
                             decoration: InputDecoration(
-                              labelText: 'login_password'.tr(),
+                              labelText: 'login_password_label'.tr(),
                               border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
