@@ -106,5 +106,22 @@
   "cart_price_label": "Price",
   "cart_total": "Total",
   "cart_clear": "Clear Cart",
-  "cart_cleared": "Cart cleared"
+  "cart_cleared": "Cart cleared",
+
+  "orders": "Orders",
+  "orders_title": "My Orders",
+  "orders_empty": "No orders yet",
+  "orders_table_order_number": "Order Number",
+  "orders_table_items": "Items",
+  "orders_table_total_price": "Total Price",
+  "orders_item": "Item",
+  "orders_product_details": "Product Details",
+  "orders_close": "Close",
+
+  "profile": "Profile",
+  "profile_title": "Profile",
+  "profile_account_info": "Account Info",
+  "profile_first_name": "First Name",
+  "profile_last_name": "Last Name",
+  "profile_email": "Email"
 }
