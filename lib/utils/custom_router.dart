@@ -9,6 +9,7 @@ import '../view/about_page.dart';
 import '../view/contact_page.dart';
 import '../view/wishlist_page.dart';
 import '../view/cart_page.dart';
+import '../view/profile_page.dart';
 
 class CustomRouter {
   static Route<dynamic>? allRoutes(RouteSettings settings) {
@@ -37,6 +38,9 @@ class CustomRouter {
       case cartScreen:
         return MaterialPageRoute(
             settings: settings, builder: (_) => const CartPage());
+      case profilePage:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => const ProfilePage());
       default:
         return null;
     }
