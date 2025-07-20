@@ -10,6 +10,7 @@ class WishlistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<WishlistCubit>().loadWishlist(); // Add this
     return Scaffold(
       appBar: AppBar(title: Text(tr("wishlist_title"))),
       body: BlocBuilder<WishlistCubit, List<Product>>(
