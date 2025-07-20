@@ -36,6 +36,13 @@ class WishlistCubit extends Cubit<List<Product>> {
     CacheHelper.saveString(key: wishlistKey, value: jsonString);
   }
 
+  void clearWishlist({bool removeCache = false}) {
+    emit([]);
+    if (removeCache) {
+      CacheHelper.removeData(key: wishlistKey);
+    }
+  }
+
   bool isInWishlist(Product product) {
     return state.any((item) => item.id == product.id);
   }
