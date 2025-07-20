@@ -45,19 +45,26 @@ class ProductCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        isInWishlist ? Icons.favorite : Icons.favorite_border,
-                        color: isInWishlist ? Colors.red : Colors.grey,
-                      ),
-                      onPressed: () {
-                        if (isInWishlist) {
-                          wishlistCubit.removeFromWishlist(product);
-                          showSuccessSnackBar(context, '${product.name} removed from wishlist');
-                        } else {
-                          wishlistCubit.addToWishlist(product);
-                          showSuccessSnackBar(context, '${product.name} added to wishlist');
-                        }
+                    BlocBuilder<WishlistCubit, List<Product>>(
+                      builder: (context, wishlist) {
+                        final isInWishlist = wishlist.any((item) => item.id == product.id);
+
+                        return IconButton(
+                          icon: Icon(
+                            isInWishlist ? Icons.favorite : Icons.favorite_border,
+                            color: isInWishlist ? Colors.red : Colors.grey,
+                          ),
+                          onPressed: () {
+                            final wishlistCubit = context.read<WishlistCubit>();
+                            if (isInWishlist) {
+                              wishlistCubit.removeFromWishlist(product);
+                              showSuccessSnackBar(context, '${product.name} removed from wishlist');
+                            } else {
+                              wishlistCubit.addToWishlist(product);
+                              showSuccessSnackBar(context, '${product.name} added to wishlist');
+                            }
+                          },
+                        );
                       },
                     ),
                     IconButton(
@@ -67,6 +74,8 @@ class ProductCard extends StatelessWidget {
                         showSuccessSnackBar(context, '${product.name} added to cart');
                       },
                     ),
+
+
                   ],
                 ),
               ],
