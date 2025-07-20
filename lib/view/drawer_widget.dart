@@ -1,3 +1,4 @@
+import 'package:cartverse/view/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -5,6 +6,9 @@ import '../cubit/theme_cubit.dart';
 import '../cubit/wishlist_cubit.dart';
 import '../cubit/cart_cubit.dart';
 import '../services/user_session.dart';
+import '../utils/cache_helper.dart';
+import '../cubit/auth_cubit.dart';
+import '../cubit/auth_state.dart';
 import 'categories_page.dart';
 import 'home_page.dart';
 import 'login_page.dart';
@@ -12,8 +16,8 @@ import 'signup_page.dart';
 import 'about_page.dart';
 import 'contact_page.dart';
 import 'wishlist_page.dart';
-
 import 'cart_page.dart';
+import 'orders_page.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -24,11 +28,18 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   bool isLoggedIn = false;
+  Locale _selectedLocale = const Locale('en'); // Default language
 
   @override
   void initState() {
     super.initState();
     checkLoginStatus();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _selectedLocale = context.locale;
   }
 
   Future<void> checkLoginStatus() async {
@@ -38,103 +49,104 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final routes = <String, Widget>{
-      tr('categories'):  CategoriesPage(),
-      tr('about'): const AboutPage(),
-      tr('contact'): const ContactPage(),
-      tr('wishlist'): const WishlistPage(),
-      tr('cart'): const CartPage(),
-      if (!isLoggedIn) tr('login'): const LoginPage(),
-      if (!isLoggedIn) tr('register'): const RegisterPage(),
-    };
+    @override
+    Widget build(BuildContext context) {
+      final themeCubit = context.read<ThemeCubit>();
+      final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
 
-    final themeCubit = context.read<ThemeCubit>();
-    final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
+      return Drawer(
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            bool isLoggedIn = state is AuthSuccess;
 
-    return Drawer(
-      child: ListView(
-        children: [
-          ...routes.entries.map(
-                (entry) => ListTile(
-              title: Text(entry.key),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => entry.value),
-                );
-              },
-            ),
-          ),
-          if (isLoggedIn) const Divider(),
-          if (isLoggedIn)
-            ListTile(
-              title: Text('logout'.tr(), style: const TextStyle(color: Colors.red)),
-              onTap: () async {
-                Navigator.pop(context);
+            final routes = <String, Widget>{
+              tr('categories'): CategoriesPage(),
+              tr('about'): const AboutPage(),
+              tr('contact'): const ContactPage(),
+              tr('wishlist'): const WishlistPage(),
+              tr('cart'): const CartPage(),
+              if (isLoggedIn) tr('profile'): const ProfilePage(),
+              if (isLoggedIn) tr('orders'): const OrdersPage(),
+              if (!isLoggedIn) tr('login'): const LoginPage(),
+              if (!isLoggedIn) tr('register'): const RegisterPage(),
+            };
 
-                // clear session
-                await UserSession.clearUser();
+            return ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                const SizedBox(height: 30),
 
-                // clear wishlist
-                context.read<WishlistCubit>().clearWishlist(removeCache: false);
+                ...routes.entries.map((entry) => ListTile(
+                  title: Text(entry.key),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => entry.value),
+                    );
+                  },
+                )),
 
-                // clear cart
-                context.read<CartCubit>().removeCartData();
+                if (isLoggedIn) const Divider(),
+                if (isLoggedIn)
+                  ListTile(
+                    title: Text('logout'.tr(), style: const TextStyle(color: Colors.red)),
+                    onTap: () {
+                      context.read<AuthCubit>().logout();
+                      context.read<WishlistCubit>().clearWishlist();
+                      context.read<CartCubit>().removeCartData(removeCache: true);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => const HomePage()),
+                            (route) => false,
+                      );
+                    },
+                  ),
 
-                setState(() => isLoggedIn = false);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                      (route) => false,
-                );
-              },
-            ),
-          const Divider(),
-          ListTile(
-            title: Text('dark_mode'.tr()),
-            trailing: Switch(
-              value: isDark,
-              onChanged: (val) {
-                themeCubit.toggleTheme();
-              },
-            ),
-          ),
-          ListTile(
-            title: const Text("🇬🇧 English"),
-            onTap: () => context.setLocale(const Locale('en')),
-          ),
-          ListTile(
-            title: const Text("🇪🇬 العربية"),
-            onTap: () => context.setLocale(const Locale('ar')),
-          ),
-          const SizedBox(height: 16),
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );
-            },
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(
-                  'app_title'.tr(),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Colors.black,
+                const Divider(),
+                ListTile(
+                  title: Text('dark_mode'.tr()),
+                  trailing: Switch(
+                    value: isDark,
+                    onChanged: (val) {
+                      themeCubit.toggleTheme();
+                    },
                   ),
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+
+                // Language Dropdown
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: DropdownButton<Locale>(
+                    value: _selectedLocale,
+                    isExpanded: true,
+                    icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
+                    items: const [
+                      DropdownMenuItem(
+                        value: Locale('en'),
+                        child: Text("🇬🇧 English"),
+                      ),
+                      DropdownMenuItem(
+                        value: Locale('ar'),
+                        child: Text("🇪🇬 العربية"),
+                      ),
+                    ],
+                    onChanged: (locale) {
+                      if (locale != null) {
+                        setState(() {
+                          _selectedLocale = locale;
+                        });
+                        context.setLocale(locale);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      );
+    }
+
   }
-}
+
