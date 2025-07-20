@@ -106,5 +106,22 @@
   "cart_price_label": "السعر",
   "cart_total": "الإجمالي",
   "cart_clear": "إفراغ العربة",
-  "cart_cleared": "تم إفراغ العربة"
+  "cart_cleared": "تم إفراغ العربة",
+
+  "orders": "الطلبات",
+  "orders_title": "طلباتي",
+  "orders_empty": "لا توجد طلبات حتى الآن",
+  "orders_table_order_number": "رقم الطلب",
+  "orders_table_items": "العناصر",
+  "orders_table_total_price": "السعر الإجمالي",
+  "orders_item": "عنصر",
+  "orders_product_details": "تفاصيل المنتج",
+  "orders_close": "إغلاق",
+
+  "profile": "الملف الشخصي",
+  "profile_title": "الملف الشخصي",
+  "profile_account_info": "معلومات الحساب",
+  "profile_first_name": "الاسم الأول",
+  "profile_last_name": "اسم العائلة",
+  "profile_email": "البريد الإلكتروني"
 }
