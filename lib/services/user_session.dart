@@ -6,9 +6,10 @@ class UserSession {
   static Future<void> saveUser({
     required String firstName,
     required String lastName,
+    required String email,
     required String token,
   }) async {
-    await CacheHelper.saveUser(firstName: firstName, lastName: lastName, token: token);
+    await CacheHelper.saveUser(firstName: firstName, lastName: lastName, email: email, token: token);
   }
 
   static Future<Map<String, String?>> getUser() async {

@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'dart:io'; // For SocketException
+import 'dart:io'; //  SocketException
 import 'dart:async'; // This gives access to TimeoutException
 import 'package:http/http.dart' as http;
+import '../utils/cache_helper.dart';
 
 class AuthService {
   final String baseUrl = 'https://cartverse-data.onrender.com';
@@ -9,7 +10,7 @@ class AuthService {
   // Timeout duration
   final Duration timeoutDuration = const Duration(seconds: 60);
 
-  Future<http.Response> login(String email, String password) async {
+  Future<void> loginUser(String email, String password) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/login'),
@@ -20,11 +21,23 @@ class AuthService {
         }),
       ).timeout(timeoutDuration);
 
-      return response;
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final user = data['user']; // user map
+        final token = data['accessToken'];
+
+        await CacheHelper.saveString(key: 'firstName', value: user['firstName']);
+        await CacheHelper.saveString(key: 'lastName', value: user['lastName']);
+        await CacheHelper.saveString(key: 'email', value: user['email']);
+        await CacheHelper.saveString(key: 'token', value: token);
+        await CacheHelper.saveString(key: 'userId', value: user['id'].toString());
+      } else {
+        throw Exception('Login failed: ${response.body}');
+      }
     } on SocketException {
       throw Exception('Network error: Check your internet connection.');
     } on TimeoutException {
-      throw Exception('Login request timed out. Server may be sleeping.');
+      throw Exception('Login request timed out.');
     } catch (e) {
       throw Exception('Unexpected login error: $e');
     }

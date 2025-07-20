@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_state.dart';
 import '../services/auth_service.dart';
-import '../services/user_session.dart';
+import '../cubit/wishlist_cubit.dart';
+import '../utils/cache_helper.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthService authService;
@@ -12,20 +13,10 @@ class AuthCubit extends Cubit<AuthState> {
   void login(String email, String password) async {
     emit(AuthLoading());
     try {
-      final response = await authService.login(email, password);
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final user = data['user'] ?? {};
-        await UserSession.saveUser(
-          firstName: user['firstName'] ?? '',
-          lastName: user['lastName'] ?? '',
-          token: data['accessToken'] ?? '',
-        );
-        emit(AuthSuccess());
-      } else {
-        emit(AuthFailure('Login failed: Check credentials.'));
-      }
+      await authService.loginUser(email, password);
+      emit(AuthSuccess());
+      print('User ID: ${CacheHelper.getString(key: 'userId')}');
+      print('Token: ${CacheHelper.getString(key: 'token')}');
     } catch (e) {
       emit(AuthFailure('Login error: $e'));
     }
@@ -45,4 +36,10 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailure('Register error: $e'));
     }
   }
+
+ void logout() async {
+    await CacheHelper.clearUser();
+    emit(AuthInitial());
+  }
+
 }

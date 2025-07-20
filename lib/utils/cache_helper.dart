@@ -41,10 +41,12 @@ class CacheHelper {
   static Future<void> saveUser({
     required String firstName,
     required String lastName,
+    required String email,
     required String token,
   }) async {
     await _prefs!.setString('firstName', firstName);
     await _prefs!.setString('lastName', lastName);
+    await _prefs!.setString('email', email);
     await _prefs!.setString('token', token);
   }
 
@@ -52,6 +54,7 @@ class CacheHelper {
     return {
       'firstName': _prefs!.getString('firstName'),
       'lastName': _prefs!.getString('lastName'),
+      'email': _prefs!.getString('email'),
       'token': _prefs!.getString('token'),
     };
   }
