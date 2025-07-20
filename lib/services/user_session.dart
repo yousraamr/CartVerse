@@ -1,28 +1,21 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/cache_helper.dart';
 
 class UserSession {
+
   static Future<void> saveUser({
     required String firstName,
     required String lastName,
     required String token,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('firstName', firstName);
-    await prefs.setString('lastName', lastName);
-    await prefs.setString('token', token);
+    await CacheHelper.saveUser(firstName: firstName, lastName: lastName, token: token);
   }
 
   static Future<Map<String, String?>> getUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    return {
-      'firstName': prefs.getString('firstName'),
-      'lastName': prefs.getString('lastName'),
-      'token': prefs.getString('token'),
-    };
+    return await CacheHelper.getUser();
   }
 
   static Future<void> clearUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+    await CacheHelper.clearUser();
   }
 }
