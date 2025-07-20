@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../cubit/theme_cubit.dart';
+import '../cubit/wishlist_cubit.dart';
+import '../cubit/cart_cubit.dart';
 import '../services/user_session.dart';
 import 'categories_page.dart';
 import 'home_page.dart';
@@ -10,6 +12,7 @@ import 'signup_page.dart';
 import 'about_page.dart';
 import 'contact_page.dart';
 import 'wishlist_page.dart';
+
 import 'cart_page.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -71,7 +74,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               title: Text('logout'.tr(), style: const TextStyle(color: Colors.red)),
               onTap: () async {
                 Navigator.pop(context);
+
+                // clear session
                 await UserSession.clearUser();
+
+                // clear wishlist
+                context.read<WishlistCubit>().clearWishlist(removeCache: false);
+
+                // clear cart
+                context.read<CartCubit>().removeCartData();
+
                 setState(() => isLoggedIn = false);
                 Navigator.pushAndRemoveUntil(
                   context,
