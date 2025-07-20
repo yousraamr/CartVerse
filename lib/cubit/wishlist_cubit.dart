@@ -2,48 +2,31 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/product_model.dart';
 import '../utils/cache_helper.dart';
+import '../services/wishlist_service.dart';
 
 class WishlistCubit extends Cubit<List<Product>> {
-  WishlistCubit() : super([]);
+  final WishlistService wishlistService;
 
-  static const String wishlistKey = 'wishlist';
+  WishlistCubit(this.wishlistService) : super([]);
 
-  void loadWishlist() {
-    final data = CacheHelper.getString(key: wishlistKey);
-    if (data != null) {
-      final List<dynamic> jsonList = jsonDecode(data);
-      emit(jsonList.map((e) => Product.fromMap(Map<String, dynamic>.from(e))).toList());
+  Future<void> loadWishlist() async {
+    try {
+      final products = await wishlistService.fetchWishlist();
+      emit(products);
+    } catch (e) {
+      emit([]);
     }
   }
 
-  void addToWishlist(Product product) {
-    final updatedList = List<Product>.from(state);
-    if (!updatedList.any((item) => item.id == product.id)) {
-      updatedList.add(product);
-      emit(updatedList);
-      _saveWishlist(updatedList);
-    }
+  Future<void> addToWishlist(Product product) async {
+    await wishlistService.addToWishlist(product);
+    await loadWishlist();
   }
 
-  void removeFromWishlist(Product product) {
-    final updatedList = List<Product>.from(state)..removeWhere((item) => item.id == product.id);
-    emit(updatedList);
-    _saveWishlist(updatedList);
+  Future<void> removeFromWishlist(Product product) async {
+    await wishlistService.removeFromWishlist(product.id.toString());
+    await loadWishlist();
   }
 
-  void _saveWishlist(List<Product> wishlist) {
-    final jsonString = jsonEncode(wishlist.map((e) => e.toMap()).toList());
-    CacheHelper.saveString(key: wishlistKey, value: jsonString);
-  }
-
-  void clearWishlist({bool removeCache = false}) {
-    emit([]);
-    if (removeCache) {
-      CacheHelper.removeData(key: wishlistKey);
-    }
-  }
-
-  bool isInWishlist(Product product) {
-    return state.any((item) => item.id == product.id);
-  }
+  void clearWishlist() => emit([]);
 }
