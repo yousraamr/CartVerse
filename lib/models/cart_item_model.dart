@@ -15,7 +15,7 @@ class CartItem {
 
   factory CartItem.fromMap(Map<String, dynamic> map) {
     return CartItem(
-      product: Product.fromMap(Map<String, dynamic>.from(map['product'])),
+      product: Product.fromMap(Map<String, dynamic>.from(map['product'] ?? {})),
       quantity: map['quantity'] ?? 1,
     );
   }
