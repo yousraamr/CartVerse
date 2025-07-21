@@ -7,6 +7,7 @@ import 'cubit/auth_cubit.dart';
 import 'cubit/theme_cubit.dart';
 import 'cubit/wishlist_cubit.dart';
 import 'cubit/order_cubit.dart';
+import 'services/order_service.dart';
 import 'cubit/cart_cubit.dart';
 import 'services/auth_service.dart';
 import 'services/wishlist_service.dart';
@@ -21,6 +22,9 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await CacheHelper.init();
 
+  final cartCubit = CartCubit();
+  final wishlistCubit = WishlistCubit(WishlistService());
+
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ar')],
@@ -28,17 +32,18 @@ void main() async {
       fallbackLocale: const Locale('en'),
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => AuthCubit(AuthService())),
+          BlocProvider(create: (_) => cartCubit),
+          BlocProvider(create: (_) => wishlistCubit),
+          BlocProvider(create: (_) => AuthCubit(AuthService(), cartCubit, wishlistCubit)),
           BlocProvider(create: (_) => ThemeCubit()),
-          BlocProvider(create: (_) => WishlistCubit(WishlistService())..loadWishlist()),
-          BlocProvider(create: (_) => CartCubit()..loadCart()),
-          BlocProvider(create: (_) => OrderCubit()),
+          BlocProvider(create: (_) => OrderCubit(OrderService())),
         ],
         child: const MyApp(),
       ),
     ),
   );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
