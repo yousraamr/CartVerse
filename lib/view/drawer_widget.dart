@@ -114,7 +114,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                 ),
 
-                // Language Dropdown
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: DropdownButton<Locale>(
@@ -141,6 +140,29 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     },
                   ),
                 ),
+
+                const SizedBox(height: 30), //
+
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => const HomePage()),
+                            (route) => false,
+                      );
+                    },
+                    child: const Text(
+                      "CartVerse",
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+
               ],
             );
           },
