@@ -1,3 +1,4 @@
+import 'package:cartverse/lang/login_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,6 +9,7 @@ import '../cubit/wishlist_cubit.dart';
 import '../cubit/cart_cubit.dart';
 import '../utils/snackbar.dart';
 import '../utils/route_names.dart';
+import '../utils/cache_helper.dart';
 import 'drawer_widget.dart';
 
 class LoginPage extends StatefulWidget {
@@ -39,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            showSuccessSnackBar(context, 'login_success'.tr());
+            showSuccessSnackBar(context, loginSuccess.tr());
 
             // reload wishlist after login
             context.read<WishlistCubit>().loadWishlist();
