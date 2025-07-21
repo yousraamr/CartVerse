@@ -94,7 +94,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     onTap: () {
                       context.read<AuthCubit>().logout();
                       context.read<WishlistCubit>().clearWishlist();
-                      context.read<CartCubit>().removeCartData(removeCache: true);
+                      context.read<CartCubit>().removeCartData(removeCache: false);
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (_) => const HomePage()),
