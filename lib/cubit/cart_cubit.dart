@@ -76,4 +76,8 @@ class CartCubit extends Cubit<List<CartItem>> {
   double getTotal() {
     return state.fold(0.0, (sum, item) => sum + (item.product.price * item.quantity));
   }
+
+  bool isInCart(Product product) {
+    return state.any((item) => item.product.id == product.id);
+  }
 }

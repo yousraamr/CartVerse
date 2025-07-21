@@ -31,9 +31,10 @@ class Product {
       id: map['id'],
       name: map['name'],
       image: map['image'],
-      price: map['price'],
+      price: (map['price'] as num).toDouble(),
       category: map['category'],
       description: map['description'],
     );
   }
+  factory Product.fromJson(Map<String, dynamic> json) => Product.fromMap(json);
 }
