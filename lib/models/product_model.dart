@@ -22,7 +22,7 @@ class Product {
       category: map['category'] ?? 'General',
       description: map['description'] ?? '',
       price: (map['price'] as num?)?.toDouble() ?? 0.0,
-      image: map['image'] ?? '', // Default empty string or placeholder
+      image: map['image'] ?? '',
     );
   }
 
