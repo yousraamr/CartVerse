@@ -7,14 +7,19 @@ import '../utils/cache_helper.dart';
 class CartCubit extends Cubit<List<CartItem>> {
   CartCubit() : super([]);
 
-  static const String cartKey = 'cart';
+  String getCartKey(String userId) => 'cart_$userId';
 
   /// Load cart items from local storage
   void loadCart() {
-    final data = CacheHelper.getString(key: cartKey);
-    if (data != null) {
-      final List<dynamic> jsonList = jsonDecode(data);
-      emit(jsonList.map((e) => CartItem.fromMap(Map<String, dynamic>.from(e))).toList());
+    final userId = CacheHelper.getString(key: 'userId') ?? '';
+    if (userId.isNotEmpty) {
+      final data = CacheHelper.getString(key: getCartKey(userId));
+      if (data != null) {
+        final List<dynamic> jsonList = jsonDecode(data);
+        emit(jsonList.map((e) => CartItem.fromMap(Map<String, dynamic>.from(e))).toList());
+      } else {
+        emit([]);
+      }
     }
   }
 
@@ -60,15 +65,19 @@ class CartCubit extends Cubit<List<CartItem>> {
 
   /// Save cart state to local storage
   void _saveCart(List<CartItem> cart) {
-    final jsonString = jsonEncode(cart.map((e) => e.toMap()).toList());
-    CacheHelper.saveString(key: cartKey, value: jsonString);
+    final userId = CacheHelper.getString(key: 'userId') ?? '';
+    if (userId.isNotEmpty) {
+      final jsonString = jsonEncode(cart.map((e) => e.toMap()).toList());
+      CacheHelper.saveString(key: getCartKey(userId), value: jsonString);
+    }
   }
 
-  // Remove cart data when logout
+  /// Remove cart data when logout
   void removeCartData({bool removeCache = false}) {
+    final userId = CacheHelper.getString(key: 'userId') ?? '';
     emit([]);
-    if (removeCache) {
-      CacheHelper.removeData(key: cartKey);
+    if (removeCache && userId.isNotEmpty) {
+      CacheHelper.removeData(key: getCartKey(userId));
     }
   }
 
@@ -76,6 +85,19 @@ class CartCubit extends Cubit<List<CartItem>> {
   double getTotal() {
     return state.fold(0.0, (sum, item) => sum + (item.product.price * item.quantity));
   }
+
+  void loadCartForUser(String userId) {
+    if (userId.isNotEmpty) {
+      final data = CacheHelper.getString(key: getCartKey(userId));
+      if (data != null) {
+        final List<dynamic> jsonList = jsonDecode(data);
+        emit(jsonList.map((e) => CartItem.fromMap(Map<String, dynamic>.from(e))).toList());
+      } else {
+        emit([]);
+      }
+    }
+  }
+
 
   bool isInCart(Product product) {
     return state.any((item) => item.product.id == product.id);
