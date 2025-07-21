@@ -10,15 +10,12 @@ class AuthService {
   // Timeout duration
   final Duration timeoutDuration = const Duration(seconds: 60);
 
-  Future<void> loginUser(String email, String password) async {
+  Future<String> loginUser(String email, String password) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/login'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode({'email': email, 'password': password}),
       ).timeout(timeoutDuration);
 
       if (response.statusCode == 200) {
@@ -31,17 +28,16 @@ class AuthService {
         await CacheHelper.saveString(key: 'email', value: user['email']);
         await CacheHelper.saveString(key: 'token', value: token);
         await CacheHelper.saveString(key: 'userId', value: user['id'].toString());
+
+        return user['id'].toString();
       } else {
         throw Exception('Login failed: ${response.body}');
       }
-    } on SocketException {
-      throw Exception('Network error: Check your internet connection.');
-    } on TimeoutException {
-      throw Exception('Login request timed out.');
     } catch (e) {
       throw Exception('Unexpected login error: $e');
     }
   }
+
 
   Future<http.Response> register(String firstName, String lastName, String email, String password) async {
     try {
