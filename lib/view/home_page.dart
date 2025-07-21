@@ -1,8 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import '../view/drawer_widget.dart';
+import '../view/categories_page.dart';
 import '../view/footer.dart';
+import '../view/cart_page.dart';
 import '../services/user_session.dart';
+import '../models/cart_item_model.dart';
+import '../utils/cache_helper.dart';
+import '../cubit/auth_cubit.dart';
+import '../cubit/auth_state.dart';
+import '../cubit/cart_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -57,7 +65,44 @@ class _HomePageState extends State<HomePage> {
     final locale = context.locale;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${'welcome'.tr()} $firstName $lastName'),
+        title: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if (state is AuthSuccess) {
+              final firstName = CacheHelper.getString(key: 'firstName') ?? '';
+              return Text('Welcome, $firstName');
+            }
+            return const Text('Welcome, Guest');
+          },
+        ),
+        actions: [
+          BlocBuilder<CartCubit, List<CartItem>>(
+            builder: (context, cart) {
+              return Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CartPage()));
+                    },
+                  ),
+                  if (cart.isNotEmpty)
+                    Positioned(
+                      right: 6,
+                      top: 6,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                        child: Text(
+                          cart.length.toString(),
+                          style: const TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(
@@ -104,7 +149,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CategoriesPage()),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                             backgroundColor: Colors.white,
