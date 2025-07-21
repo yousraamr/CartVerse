@@ -3,19 +3,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_state.dart';
 import '../services/auth_service.dart';
 import '../cubit/wishlist_cubit.dart';
+import '../cubit/cart_cubit.dart';
 import '../utils/cache_helper.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthService authService;
+  final CartCubit cartCubit;
+  final WishlistCubit wishlistCubit;
 
-  AuthCubit(this.authService) : super(AuthInitial());
+  AuthCubit(this.authService, this.cartCubit, this.wishlistCubit) : super(AuthInitial());
 
   void login(String email, String password) async {
-    emit(AuthLoading());
     try {
-      await authService.loginUser(email, password);
+      emit(AuthLoading());
+      final userId = await authService.loginUser(email, password);
+      cartCubit.loadCartForUser(userId);
+
       emit(AuthSuccess());
-      print('User ID: ${CacheHelper.getString(key: 'userId')}');
+      print('User ID: $userId');
       print('Token: ${CacheHelper.getString(key: 'token')}');
     } catch (e) {
       emit(AuthFailure('Login error: $e'));
@@ -39,7 +44,9 @@ class AuthCubit extends Cubit<AuthState> {
 
  void logout() async {
     await CacheHelper.clearUser();
+    cartCubit.removeCartData(removeCache: false);
+    wishlistCubit.clearWishlist();
+
     emit(AuthInitial());
   }
-
 }
