@@ -20,7 +20,8 @@ A responsive **Flutter mobile application** converted from an existing e-commerc
 
 ## 🎥 Demo Video
 
-Watch the demo here: [View Demo]([https://yourvideolink.com](https://drive.google.com/file/d/1gTkKZT7H-jHXk1M5I8hWwnCPu_z0N_0V/view?usp=sharing))
+[Watch the demo here on Google Drive](https://drive.google.com/file/d/1gTkKZT7H-jHXk1M5I8hWwnCPu_z0N_0V/view?usp=sharing)
+
 
 ## 📱 Screenshots
 - Forgot to capture this page in demo
@@ -83,7 +84,7 @@ Localization is saved per user using `shared_preferences`.
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/ecommerce_flutter_app.git
-cd ecommerce_flutter_app
+cd cartverse
 ```
 ### 2. Install Dependencies
 ```bash
@@ -92,4 +93,11 @@ flutter pub get
 ### 3.Run the App
 ```bash
 flutter run
+```
 
+## Contact
+- Need help or have a question? Feel free to reach out!
+
+-  Email: [![Yousra Amr](https://img.shields.io/badge/yousra%20amr-Contact-blue)](mailto:yousraamr000@gmail.com)
+-  LinkedIn: [www.linkedin.com/in/yousra-amr-93a691279](https://www.linkedin.com/in/yousra-amr-93a691279)  
+-  GitHub: [@yousraamr](https://github.com/yousraamr)
