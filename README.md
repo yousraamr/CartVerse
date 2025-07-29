@@ -25,7 +25,7 @@ A responsive **Flutter mobile application** converted from an existing e-commerc
 
 ## 📱 Screenshots
 - Forgot to capture this page in demo
-<img src="\Screenshots\CartVerse_screenshot_YousraAmr.jpg" width="300"/>
+<img src="\assets\images\CartVerse_screenshot_YousraAmr.jpg" width="300"/>
 ---
 
 ## 🛠️ Technologies & Packages Used
