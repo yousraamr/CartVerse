@@ -26,7 +26,6 @@ A responsive **Flutter mobile application** converted from an existing e-commerc
 ## 📱 Screenshots
 - Forgot to capture this page in demo
 <img src="\assets\images\CartVerse_screenshot_YousraAmr.jpg" width="300"/>
----
 
 ## 🛠️ Technologies & Packages Used
 
@@ -83,7 +82,7 @@ Localization is saved per user using `shared_preferences`.
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/ecommerce_flutter_app.git
+git clone https://github.com/yousraamr/CartVerse
 cd cartverse
 ```
 ### 2. Install Dependencies
